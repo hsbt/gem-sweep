@@ -10,12 +10,12 @@ permissions:
 
 jobs:
   push:
-    if: github.repository == 'hsbt/gem-ext-cleaner'
+    if: github.repository == 'hsbt/gem-sweep'
     runs-on: ubuntu-latest
 
     environment:
       name: rubygems.org
-      url: https://rubygems.org/gems/gem-ext-cleaner
+      url: https://rubygems.org/gems/gem-sweep
 
     permissions:
       contents: write
