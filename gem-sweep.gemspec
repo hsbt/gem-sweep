@@ -12,6 +12,6 @@ Gem::Specification.new do |spec|
   spec.licenses      = ["Ruby", "BSD-2-Clause"]
   spec.required_ruby_version = Gem::Requirement.new(">= 2.4.0")
 
-  spec.files         = ["lib/rubygems_plugin.rb", "lib/gem-sweep.rb"]
+  spec.files         = ["lib/rubygems_plugin.rb", "lib/rubygems/commands/sweep_command.rb"]
   spec.require_paths = ["lib"]
 end

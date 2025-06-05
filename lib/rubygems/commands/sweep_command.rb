@@ -1,5 +1,6 @@
 require "rbconfig"
 require "pathname"
+require "rubygems/command"
 
 module GemSweep
   def self.clean(spec)
@@ -16,6 +17,19 @@ module GemSweep
         end
       rescue Errno::EPERM
       end
+    end
+  end
+end
+
+class Gem::Commands::SweepCommand < Gem::Command
+  def initialize
+    super "sweep", "Clean up unnecessary extension files"
+  end
+
+  def execute
+    Gem::Specification.each do |spec|
+      next if spec.extensions.empty?
+      GemSweep.clean(spec)
     end
   end
 end
