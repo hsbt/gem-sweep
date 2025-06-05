@@ -20,22 +20,28 @@ module GemSweep
     end
 
     if aggressive
-      clean_test_directories(spec)
+      clean_development_directories(spec)
     end
   end
 
-  def self.clean_test_directories(spec)
+  def self.clean_development_directories(spec)
     %w[test spec features].each do |dir_name|
-      test_dir = File.join(spec.full_gem_path, dir_name)
-      if Dir.exist?(test_dir)
-        begin
-          require "fileutils"
-          FileUtils.rm_rf(test_dir)
-          puts "Delete #{test_dir}/"
-        rescue Errno::EPERM
-          puts "Permission denied: #{test_dir}/"
-        end
-      end
+      dir_path = File.join(spec.full_gem_path, dir_name)
+      remove_directory(dir_path) if Dir.exist?(dir_path)
+    end
+
+    Dir.glob(File.join(spec.full_gem_path, "**/tmp")).each do |tmp_dir|
+      remove_directory(tmp_dir) if Dir.exist?(tmp_dir)
+    end
+  end
+
+  def self.remove_directory(dir_path)
+    begin
+      require "fileutils"
+      FileUtils.rm_rf(dir_path)
+      puts "Delete #{dir_path}/"
+    rescue Errno::EPERM
+      puts "Permission denied: #{dir_path}/"
     end
   end
 end
@@ -43,7 +49,7 @@ end
 class Gem::Commands::SweepCommand < Gem::Command
   def initialize
     super "sweep", "Clean up unnecessary extension files"
-    
+
     add_option("-a", "--aggressive", "Also remove test, spec, and features directories") do |value, options|
       options[:aggressive] = true
     end
