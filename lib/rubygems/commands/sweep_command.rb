@@ -48,7 +48,7 @@ module GemSweep
 
   def self.uninstall_missing_extensions(dryrun: false)
     specs = Gem::Specification.select do |spec|
-      spec.respond_to?(:missing_extensions?) && spec.missing_extensions?
+      spec.missing_extensions?
     end
 
     if specs.empty?
