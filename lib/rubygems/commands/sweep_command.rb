@@ -46,6 +46,33 @@ module GemSweep
     targets
   end
 
+  def self.uninstall_missing_extensions(dryrun: false)
+    specs = Gem::Specification.select do |spec|
+      spec.respond_to?(:missing_extensions?) && spec.missing_extensions?
+    end
+
+    if specs.empty?
+      puts "No gems with missing extensions found"
+      return
+    end
+
+    require "rubygems/uninstaller"
+
+    specs.each do |spec|
+      if dryrun
+        puts "Would uninstall #{spec.full_name} (missing extensions)"
+      else
+        begin
+          uninstaller = Gem::Uninstaller.new(spec.name, version: spec.version, executables: true)
+          uninstaller.uninstall
+          puts "Uninstalled #{spec.full_name} (missing extensions)"
+        rescue Gem::InstallError => e
+          puts "Could not uninstall #{spec.full_name}: #{e.message}"
+        end
+      end
+    end
+  end
+
   def self.remove_targets(targets, dryrun: false)
     targets.each do |path|
       begin
@@ -74,6 +101,10 @@ class Gem::Commands::SweepCommand < Gem::Command
     add_option("-n", "--dryrun", "Show what would be deleted without actually deleting") do |value, options|
       options[:dryrun] = true
     end
+
+    add_option("--missing-extensions", "Uninstall gems with missing C extensions") do |value, options|
+      options[:missing_extensions] = true
+    end
   end
 
   def execute
@@ -85,9 +116,13 @@ class Gem::Commands::SweepCommand < Gem::Command
       puts
     end
 
-    Gem::Specification.each do |spec|
-      if aggressive || !spec.extensions.empty?
-        GemSweep.clean(spec, aggressive: aggressive, dryrun: dryrun)
+    if options[:missing_extensions]
+      GemSweep.uninstall_missing_extensions(dryrun: dryrun)
+    else
+      Gem::Specification.each do |spec|
+        if aggressive || !spec.extensions.empty?
+          GemSweep.clean(spec, aggressive: aggressive, dryrun: dryrun)
+        end
       end
     end
   end
