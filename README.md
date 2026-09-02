@@ -7,7 +7,7 @@ gem uninstall gem-sweep
 gem install gem-repair
 ```
 
-`gem sweep` becomes `gem repair`, `gem sweep --missing-extensions` becomes `gem repair --prune`, and `gem sweep -n` becomes `gem repair -n`. The `--aggressive` mode was not carried over.
+`gem sweep` becomes `gem repair`, `gem sweep --missing-extensions` becomes `gem repair --prune`, `gem sweep -n` becomes `gem repair -n`, and `gem sweep --aggressive` becomes `gem repair --aggressive-sweep` (gem-repair 0.3.0 or later).
 
 This gem receives no further updates. The original documentation follows.
 
