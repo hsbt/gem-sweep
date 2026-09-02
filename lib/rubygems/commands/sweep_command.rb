@@ -48,7 +48,7 @@ module GemSweep
 
   def self.uninstall_missing_extensions(dryrun: false)
     specs = Gem::Specification.select do |spec|
-      spec.respond_to?(:missing_extensions?) && spec.missing_extensions?
+      spec.missing_extensions?
     end
 
     if specs.empty?
@@ -66,7 +66,7 @@ module GemSweep
           uninstaller = Gem::Uninstaller.new(spec.name, version: spec.version, executables: true)
           uninstaller.uninstall
           puts "Uninstalled #{spec.full_name} (missing extensions)"
-        rescue Gem::InstallError => e
+        rescue Gem::InstallError, Gem::FilePermissionError => e
           puts "Could not uninstall #{spec.full_name}: #{e.message}"
         end
       end

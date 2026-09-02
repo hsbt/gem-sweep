@@ -1,5 +1,18 @@
 # gem-sweep
 
+**Deprecated.** The install hook and the `gem sweep` command moved to [gem-repair](https://github.com/hsbt/gem-repair), which also rebuilds extensions for the other rubies sharing a `GEM_HOME`. Switch with:
+
+```sh
+gem uninstall gem-sweep
+gem install gem-repair
+```
+
+`gem sweep` becomes `gem repair`, `gem sweep --missing-extensions` becomes `gem repair --prune`, and `gem sweep -n` becomes `gem repair -n`. The `--aggressive` mode was not carried over.
+
+This gem receives no further updates. The original documentation follows.
+
+---
+
 This RubyGems plugin provides the `gem sweep` command to clean up unnecessary native extension files from gem installations.
 
 ## Features
