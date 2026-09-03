@@ -1,15 +1,16 @@
 Gem::Specification.new do |spec|
   spec.name          = "gem-sweep"
-  spec.version       = "0.3.0"
+  spec.version       = "0.4.0"
   spec.authors       = ["Hiroshi SHIBATA"]
   spec.email         = ["hsbt@ruby-lang.org"]
 
   spec.summary       = %q{Clean up unnecessary extension files for gem command.}
-  spec.description   = spec.summary
+  spec.description   = "Deprecated. All features moved to gem-repair (https://github.com/hsbt/gem-repair). Install gem-repair instead. This gem receives no further updates."
   spec.homepage      = "https://github.com/hsbt/gem-sweep"
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
   spec.licenses      = ["MIT"]
+  spec.post_install_message = "gem-sweep is deprecated. Run `gem uninstall gem-sweep` and `gem install gem-repair` (https://github.com/hsbt/gem-repair). `gem sweep` becomes `gem repair`, `gem sweep --missing-extensions` becomes `gem repair --prune`, and `gem sweep -n` becomes `gem repair -n`.\n"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.4.0")
 
   spec.files         = ["lib/rubygems_plugin.rb", "lib/rubygems/commands/sweep_command.rb"]
